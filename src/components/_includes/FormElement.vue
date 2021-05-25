@@ -11,7 +11,9 @@
         _class="px-2 py-1.5 w-full border-2 border-gray-300 focus:outline-none focus:border-green-500 text-gray-800 rounded-md"
       />
     </div>
-    <span v-if="error" class="text-red-500 py-1">{{ error }}</span>
+    <div class="text-red-500 py-1">
+      <slot name="error" />
+    </div>
   </label>
 </template>
 
