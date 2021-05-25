@@ -1,65 +1,98 @@
 <template>
   <div class="flex flex-col" v-if="product">
-    <form-element label="title" v-slot="title">
-      <input
-        :class="title._class"
-        placeholder="Définir un titre"
-        v-model="product.title"
-      />
+    <pre>{{ $v }}</pre>
+    <form-element label="title">
+      <template v-slot:default="title">
+        <input
+          :class="title._class"
+          placeholder="Définir un titre"
+          v-model="product.title"
+        />
+      </template>
+      <template v-slot:error v-if="$v.product.title.$dirty">
+        <span v-if="!$v.product.title.required">Le titre est requis.</span>
+        <span v-if="!$v.product.title.min"
+          >Title must be at least
+          {{ $v.product.title.$params.min.min }} caractères.</span
+        >
+      </template>
     </form-element>
-    <form-element label="Price" v-slot="price">
-      <input
-        :class="price._class"
-        placeholder="Définir un prix"
-        v-model="product.price"
-      />
+    <form-element label="Price">
+      <template v-slot:default="price">
+        <input
+          :class="price._class"
+          placeholder="Définir un prix"
+          v-model.number="product.price"
+        />
+      </template>
+      <template v-slot:error v-if="$v.product.price.$dirty">
+        <span v-if="!$v.product.price.required">Le prix est requis.</span>
+        <span v-if="!$v.product.price.min"
+          >Price must be at least {{ $v.product.price.$params.min.min }}€</span
+        >
+      </template>
     </form-element>
     <form-element label="Category">
-      <v-selector
-        :elements="categories"
-        trackBy="id"
-        :multiple="false"
-        v-model="category"
-        v-slot="{ selectorSlot }"
-      >
-        <div class="flex flex-col">
-          <div
-            v-for="el in selectorSlot.visibleElements"
-            :key="el.id"
-            @click="selectorSlot.toggle(el)"
-            class="
-              flex
-              items-center
-              whitespace-nowrap
-              cursor-pointer
-              px-2
-              py-1
-              font-medium
-              uppercase
-              tracking-tighter
-            "
-            :class="{
-              ['text-green-500']: selectorSlot.isSelected(el),
-              ['text-gray-600 hover:text-green-500']:
-                !selectorSlot.isSelected(el),
-            }"
-          >
-            <span class="text-sm">{{ el.name }}</span>
-            <span
-              class="material-icons ml-1 text-[16px]"
-              v-if="selectorSlot.isSelected(el)"
-              >check</span
+      <template v-slot:default>
+        <v-selector
+          :elements="categories"
+          trackBy="id"
+          :multiple="false"
+          v-model="category"
+          v-slot="{ selectorSlot }"
+        >
+          <div class="flex flex-col">
+            <div
+              v-for="el in selectorSlot.visibleElements"
+              :key="el.id"
+              @click="selectorSlot.toggle(el)"
+              class="
+                flex
+                items-center
+                whitespace-nowrap
+                cursor-pointer
+                px-2
+                py-1
+                font-medium
+                uppercase
+                tracking-tighter
+              "
+              :class="{
+                ['text-green-500']: selectorSlot.isSelected(el),
+                ['text-gray-600 hover:text-green-500']:
+                  !selectorSlot.isSelected(el),
+              }"
             >
+              <span class="text-sm">{{ el.name }}</span>
+              <span
+                class="material-icons ml-1 text-[16px]"
+                v-if="selectorSlot.isSelected(el)"
+                >check</span
+              >
+            </div>
           </div>
-        </div>
-      </v-selector>
+        </v-selector>
+      </template>
+      <template v-slot:error v-if="$v.product.category.$dirty">
+        <span v-if="!$v.product.category.required"
+          >Vous devez sélectionner une catégorie</span
+        >
+      </template>
     </form-element>
-    <form-element label="Description" v-slot="description">
-      <textarea
-        :class="description._class"
-        placeholder="Définir une description"
-        v-model="product.description"
-      />
+    <form-element label="Description">
+      <template v-slot:default="description">
+        <textarea
+          :class="description._class"
+          placeholder="Définir une description"
+          v-model="product.description"
+        />
+      </template>
+      <template v-slot:error v-if="$v.product.description.$dirty">
+        <span v-if="!$v.product.description.max"
+          >La description peut faire au maximum
+          {{ $v.product.description.$params.max.max }} caractères.</span
+        >
+      </template>
     </form-element>
     <form-element label="Image" v-slot="image">
       <div>
@@ -78,7 +111,16 @@
       </div>
     </form-element>
     <div>
-      <v-button class="text-white bg-green-500 flex-none" @clicked="submit">
+      <v-button
+        class="flex-none"
+        :class="{
+          ['text-gray-400 bg-gray-200']:
+            $v.product.$dirty && $v.product.$invalid,
+          ['text-white bg-green-500']:
+            !$v.product.$dirty || !$v.product.$invalid,
+        }"
+        @clicked="submit"
+      >
         <template v-slot:text="btn">
           <span :class="btn._class"
             >{{ isEdit ? "Edit" : "Add" }} this product</span
@@ -91,6 +133,12 @@
 
 <script lang="ts">
 import { Component } from "vue-property-decorator";
+import {
+  required,
+  minLength,
+  minValue,
+  maxLength,
+} from "vuelidate/lib/validators";
 import Vue from "@/strong-vue";
 import FormElement from "@/components/_includes/FormElement.vue";
 import VButton from "@/components/_includes/Button.vue";
@@ -101,7 +149,17 @@ import { ModelTypes } from "@/types";
 import { RouteNames } from "@/router";
 import { ActionTypes } from "@/store/types";
 
-@Component({ components: { FormElement, VButton, VIcon, VSelector } })
+@Component({
+  components: { FormElement, VButton, VIcon, VSelector },
+  validations: {
+    product: {
+      title: { required, min: minLength(2) },
+      category: { required },
+      price: { required, min: minValue(0) },
+      description: { max: maxLength(200) },
+    },
+  },
+})
 export default class Form extends Vue {
   private product: ModelTypes.EditableProduct = helpers.models.product.new();
   private categories: Array<{ id: number; name: string }> = [];
@@ -135,6 +193,8 @@ export default class Form extends Vue {
     return !!this.product.id;
   }
   private async submit() {
+    this.$v.$touch();
+    if (this.$v.product.$invalid) return;
     this.isEdit ? this.update() : this.store();
     this.$router.push({ name: RouteNames.products });
   }
@@ -157,7 +217,7 @@ export default class Form extends Vue {
     this.$store.dispatch(ActionTypes.products.STORE_PRODUCT, storedProduct);
   }
   private set category(value: Array<{ id: number; name: string }>) {
-    this.product.category = value[0].name;
+    this.product.category = value.length === 0 ? "" : value[0].name;
   }
   private get category() {
     return [
