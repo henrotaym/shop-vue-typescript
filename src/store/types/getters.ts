@@ -6,7 +6,7 @@ export enum GetterTypes {
   SELECTED_SORT = "SELECTED_SORT",
   DEFAULT_SORT = "DEFAULT_SORT",
   HAS_PRODUCTS = "HAS_PRODUCTS",
- }
+}
 
 export type Getters<S = State> = {
   [GetterTypes.FILTERED_PRODUCTS](state: S): Array<ModelTypes.Product>;

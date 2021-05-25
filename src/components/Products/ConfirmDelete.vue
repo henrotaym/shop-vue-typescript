@@ -61,13 +61,12 @@ export default class Modal extends Vue {
     this.product = product;
   }
   private async validate() {
-    const product = await helpers.models.product.delete({
+    await helpers.models.product.delete({
       id: this.product.id,
     });
-    if (product)
-      this.$store.dispatch(ActionTypes.products.DELETE_PRODUCT, {
-        id: this.product.id,
-      });
+    this.$store.dispatch(ActionTypes.products.DELETE_PRODUCT, {
+      id: this.product.id,
+    });
     this.close();
   }
   private cancel() {
