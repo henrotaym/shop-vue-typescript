@@ -10,9 +10,9 @@
     <template v-slot:empty>
       <div class="flex flex-col items-center">
         <v-icon name="announcement" class="text-5xl text-green-500 my-10" />
-        <span class="text-gray-400"
-          >There isn't any product matching search...</span
-        >
+        <span class="text-gray-400">
+          {{ $t("products.search.empty") }}
+        </span>
       </div>
     </template>
   </default-pagination>
