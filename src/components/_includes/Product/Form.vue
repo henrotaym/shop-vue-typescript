@@ -1,38 +1,48 @@
 <template>
   <div class="flex flex-col" v-if="product">
-    <pre>{{ $v }}</pre>
-    <form-element label="title">
+    <form-element :label="$t('product.form.title.label')">
       <template v-slot:default="title">
         <input
           :class="title._class"
-          placeholder="Définir un titre"
+          :placeholder="$t('product.form.title.placeholder')"
           v-model="product.title"
         />
       </template>
       <template v-slot:error v-if="$v.product.title.$dirty">
-        <span v-if="!$v.product.title.required">Le titre est requis.</span>
-        <span v-if="!$v.product.title.min"
-          >Title must be at least
-          {{ $v.product.title.$params.min.min }} caractères.</span
-        >
+        <span v-if="!$v.product.title.required">{{
+          $t("product.form.title.error.required")
+        }}</span>
+        <span v-if="!$v.product.title.min">
+          {{
+            $t("product.form.title.error.min", {
+              length: $v.product.title.$params.min.min,
+            })
+          }}
+        </span>
       </template>
     </form-element>
-    <form-element label="Price">
+    <form-element :label="$t('product.form.price.label')">
       <template v-slot:default="price">
         <input
           :class="price._class"
-          placeholder="Définir un prix"
+          :placeholder="$t('product.form.price.placeholder')"
           v-model.number="product.price"
         />
       </template>
       <template v-slot:error v-if="$v.product.price.$dirty">
-        <span v-if="!$v.product.price.required">Le prix est requis.</span>
-        <span v-if="!$v.product.price.min"
-          >Price must be at least {{ $v.product.price.$params.min.min }}€</span
-        >
+        <span v-if="!$v.product.price.required">
+          {{ $t("product.form.price.error.required") }}
+        </span>
+        <span v-if="!$v.product.price.min">
+          {{
+            $t("product.form.price.error.min", {
+              amount: $v.product.price.$params.min.min,
+            })
+          }}
+        </span>
       </template>
     </form-element>
-    <form-element label="Category">
+    <form-element :label="$t('product.form.category.label')">
       <template v-slot:default>
         <v-selector
           :elements="categories"
@@ -74,27 +84,30 @@
         </v-selector>
       </template>
       <template v-slot:error v-if="$v.product.category.$dirty">
-        <span v-if="!$v.product.category.required"
-          >Vous devez sélectionner une catégorie</span
-        >
+        <span v-if="!$v.product.category.required">
+          {{ $t("product.form.category.error.required") }}
+        </span>
       </template>
     </form-element>
-    <form-element label="Description">
+    <form-element :label="$t('product.form.description.label')">
       <template v-slot:default="description">
         <textarea
           :class="description._class"
-          placeholder="Définir une description"
+          :placeholder="$t('product.form.description.placeholder')"
           v-model="product.description"
         />
       </template>
       <template v-slot:error v-if="$v.product.description.$dirty">
-        <span v-if="!$v.product.description.max"
-          >La description peut faire au maximum
-          {{ $v.product.description.$params.max.max }} caractères.</span
-        >
+        <span v-if="!$v.product.description.max">
+          {{
+            $t("product.form.description.error.max", {
+              length: $v.product.description.$params.max.max,
+            })
+          }}
+        </span>
       </template>
     </form-element>
-    <form-element label="Image" v-slot="image">
+    <form-element :label="$t('product.form.image.label')" v-slot="image">
       <div>
         <img
           v-if="product.image"
@@ -114,7 +127,7 @@
       <v-button
         class="flex-none"
         :class="{
-          ['text-gray-400 bg-gray-200']:
+          ['text-gray-400 bg-gray-200 cursor-default']:
             $v.product.$dirty && $v.product.$invalid,
           ['text-white bg-green-500']:
             !$v.product.$dirty || !$v.product.$invalid,
@@ -122,9 +135,13 @@
         @clicked="submit"
       >
         <template v-slot:text="btn">
-          <span :class="btn._class"
-            >{{ isEdit ? "Edit" : "Add" }} this product</span
-          >
+          <span :class="btn._class">
+            {{
+              isEdit
+                ? $t("product.form.buttons.submit.edit")
+                : $t("product.form.buttons.submit.create")
+            }}
+          </span>
         </template>
       </v-button>
     </div>

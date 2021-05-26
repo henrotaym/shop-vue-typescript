@@ -10,27 +10,28 @@
           alt="product.title"
         />
       </figure>
-      <span class="py-4 text-2xl font-medium text-gray-800"
-        >Delete this product ?</span
-      >
-      <span class="p-4 text-center text-gray-600"
-        >Once you delete this product, it will be gone forever. There is no
-        turning back !</span
-      >
+      <span class="py-4 text-2xl font-medium text-gray-800">
+        {{ $t("products.confirm_delete.title") }}
+      </span>
+      <span class="p-4 text-center text-gray-600">
+        {{ $t("products.confirm_delete.warning") }}
+      </span>
       <div class="pt-4 flex flex-col">
         <v-button
           class="bg-red-500 text-white justify-center"
           @clicked="validate"
         >
           <template v-slot:text="text">
-            <span :class="text._class">Delete now</span>
+            <span :class="text._class">
+              {{ $t("products.confirm_delete.buttons.confirm") }}
+            </span>
           </template>
         </v-button>
         <v-button class="text-blue-500 justify-center mt-4" @clicked="cancel">
           <template v-slot:text>
-            <span class="tracking tighter text-sm font-medium"
-              >No I changed my mind</span
-            >
+            <span class="tracking tighter text-sm font-medium">
+              {{ $t("products.confirm_delete.buttons.cancel") }}
+            </span>
           </template>
         </v-button>
       </div>

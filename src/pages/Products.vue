@@ -1,13 +1,15 @@
 <template>
   <div class="px-4 max-w-screen-xl m-auto">
     <div class="flex items-center my-10 -mx-3">
-      <h1 class="text-3xl font-medium text-gray-800 mx-3">Products</h1>
+      <h1 class="text-3xl font-medium text-gray-800 mx-3">
+        {{ $t("products.title") }}
+      </h1>
       <v-button class="bg-green-500 text-white" @clicked="goToCreate">
         <template v-slot:icon="icon">
           <v-icon name="add" :class="icon._class" />
         </template>
         <template v-slot:text="text">
-          <span :class="text._class">Nouveau produit</span>
+          <span :class="text._class">{{ $t("products.buttons.new") }}</span>
         </template>
       </v-button>
     </div>

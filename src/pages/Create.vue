@@ -1,5 +1,5 @@
 <template>
-  <product-page page-title="Create a product">
+  <product-page :page-title="$t('product.create.title')">
     <product-form />
   </product-page>
 </template>

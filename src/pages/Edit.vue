@@ -1,5 +1,5 @@
 <template>
-  <product-page page-title="Edit a product" v-if="product">
+  <product-page :page-title="$t('product.edit.title')" v-if="product">
     <product-form />
   </product-page>
 </template>
