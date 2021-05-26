@@ -26,7 +26,7 @@
         focus:border-green-300
         focus:outline-none
       "
-      placeholder="Rechercher un produit"
+      :placeholder="$t('products.search.placeholder')"
       :value="value"
       @input="handleInput"
       @keydown.esc="cancel"

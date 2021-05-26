@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-end">
-    <span class="text-gray-400 px-2">Sort by :</span>
+    <span class="text-gray-400 px-2">{{ $t("products.sort.label") }}</span>
     <v-selector
       :elements="sortings"
       trackBy="id"
@@ -34,6 +34,7 @@
             class="
               flex
               items-center
+              justify-end
               whitespace-nowrap
               cursor-pointer
               px-2
@@ -48,12 +49,12 @@
                 !selectorSlot.isSelected(el),
             }"
           >
-            <span class="text-sm">{{ el.title }}</span>
             <span
-              class="material-icons ml-1 text-[16px]"
+              class="material-icons mr-1 text-[16px]"
               v-if="selectorSlot.isSelected(el)"
               >check</span
             >
+            <span class="text-sm">{{ el.title }}</span>
           </div>
         </div>
       </div>
