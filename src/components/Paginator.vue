@@ -14,6 +14,7 @@ export type PaginatorSlot = {
   isActive: (page: number) => boolean;
   current: number;
   visible: never[];
+  hasVisible: boolean;
   pages: number[];
   goTo: (page: number) => void;
 };
@@ -31,7 +32,8 @@ export default class Paginator extends Vue {
     if (this.hasPrevious) this.currentPage--;
   }
   private goToPage(page: number) {
-    if (page <= this.pageCount && page > 0) this.currentPage = page;
+    if (!this.hasVisibleElements) this.currentPage = 1;
+    else if (page <= this.pageCount && page > 0) this.currentPage = page;
   }
   private isActivePage(page: number) {
     return this.currentPage === page;
@@ -63,6 +65,9 @@ export default class Paginator extends Vue {
       this.pageEndIndex(this.currentPage)
     );
   }
+  private get hasVisibleElements() {
+    return this.visibleElements.length > 0;
+  }
   private get paginatorSlot(): PaginatorSlot {
     return {
       next: this.next,
@@ -72,6 +77,7 @@ export default class Paginator extends Vue {
       isActive: this.isActivePage,
       current: this.currentPage,
       visible: this.visibleElements,
+      hasVisible: this.hasVisibleElements,
       pages: this.pages,
       goTo: this.goToPage,
     };

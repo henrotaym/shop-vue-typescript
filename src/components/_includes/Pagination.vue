@@ -8,7 +8,12 @@
   >
     <div>
       <ul class="flex flex-col mb-6">
-        <slot :visible="paginator.visible" />
+        <slot
+          name="visible"
+          :visible="paginator.visible"
+          v-if="paginator.hasVisible"
+        />
+        <slot name="empty" v-else />
       </ul>
       <ul class="flex items-center justify-center">
         <v-icon
