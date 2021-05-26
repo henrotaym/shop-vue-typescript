@@ -1,4 +1,4 @@
-import { ActionContext } from "vuex";
+import { ActionContext, DispatchOptions } from "vuex";
 import { ProductsActionTypes, ProductsActions } from "./products";
 import { ProductActionTypes, ProductActions } from "./product";
 import { State } from "../state";
@@ -19,7 +19,12 @@ export type AugmentedActionContext = {
   getters: {
     [K in keyof Getters]: ReturnType<Getters[K]>;
   };
-} & Omit<ActionContext<State, State>, "commit" | "getters">;
+  dispatch<K extends keyof Actions>(
+    key: K,
+    payload: Parameters<Actions[K]>[1],
+    options?: DispatchOptions
+  ): ReturnType<Actions[K]>;
+} & Omit<ActionContext<State, State>, "commit" | "getters" | "dispatch">;
 
 export {
   ActionTypes,
