@@ -14,8 +14,8 @@
       <span class="text-gray-400">#{{ product.id }}</span>
     </div>
     <span class="px-6 w-2/12 flex items-center">
-      <span class="material-icons text-green-400">attach_money</span
-      >{{ product.price }}</span
+      <v-icon name="attach_money" class="text-green-400" />
+      {{ product.price }}</span
     >
     <span class="px-6 w-2/12 text-white flex">
       <span
@@ -37,9 +37,9 @@
       </span>
     </span>
     <div class="pl-6 w-1/12 text-right">
-      <span
+      <v-icon
+        name="delete"
         class="
-          material-icons
           text-gray-400 text-right
           opacity-0
           group-hover:opacity-100
@@ -47,9 +47,8 @@
           p-2
           cursor-pointer
         "
-        @click.stop="handleDelete"
-        >delete</span
-      >
+        @click.native.stop="handleDelete"
+      />
     </div>
   </div>
 </template>
@@ -57,10 +56,11 @@
 <script lang="ts">
 import { Component, Prop } from "vue-property-decorator";
 import Vue from "@/strong-vue";
+import VIcon from "@/components/_includes/Icon.vue";
 import { ModelTypes } from "@/types";
 import { RouteNames } from "@/router";
 
-@Component
+@Component({ components: { VIcon } })
 export default class Product extends Vue {
   @Prop() readonly product!: ModelTypes.Product;
   private handleDelete() {

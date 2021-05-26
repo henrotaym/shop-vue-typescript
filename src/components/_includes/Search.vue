@@ -1,6 +1,7 @@
 <template>
   <label class="relative flex w-full">
-    <span
+    <v-icon
+      name="search"
       class="
         absolute
         left-0
@@ -9,10 +10,8 @@
         -translate-y-1/2
         text-green-400
         px-4
-        material-icons
       "
-      >search</span
-    >
+    />
     <input
       type="text"
       class="
@@ -37,9 +36,10 @@
 <script lang="ts">
 import { Component, Prop } from "vue-property-decorator";
 import Vue from "@/strong-vue";
+import VIcon from "@/components/_includes/Icon.vue";
 import helpers from "@/helpers";
 
-@Component
+@Component({ components: { VIcon } })
 export default class Search extends Vue {
   private emitSearch!: () => void;
   @Prop() readonly value!: string;

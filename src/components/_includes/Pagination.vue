@@ -11,17 +11,15 @@
         <slot :visible="paginator.visible" />
       </ul>
       <ul class="flex items-center justify-center">
-        <span
-          class="material-icons"
+        <v-icon
+          name="chevron_left"
           :class="{
             ['text-gray-400 hover:text-green-500 cursor-pointer']:
               paginator.hasPrevious,
             ['text-gray-200 cursor-default']: !paginator.hasPrevious,
           }"
-          @click="paginator.previous"
-        >
-          chevron_left
-        </span>
+          @click.native="paginator.previous"
+        />
         <li
           v-for="page in paginator.pages"
           :key="`page_${page}`"
@@ -43,17 +41,15 @@
         >
           {{ page }}
         </li>
-        <span
-          class="material-icons"
+        <v-icon
+          name="chevron_right"
           :class="{
-            ['text-gray-400 hover:text-green-500  cursor-pointer']:
+            ['text-gray-400 hover:text-green-500 cursor-pointer']:
               paginator.hasNext,
             ['text-gray-200 cursor-default']: !paginator.hasNext,
           }"
-          @click="paginator.next"
-        >
-          chevron_right
-        </span>
+          @click.native="paginator.next"
+        />
       </ul>
     </div>
   </v-paginator>
@@ -63,9 +59,10 @@
 import { Component, Prop } from "vue-property-decorator";
 import Vue from "@/strong-vue";
 import VPaginator from "@/components/Paginator.vue";
+import VIcon from "@/components/_includes/Icon.vue";
 
 @Component({
-  components: { VPaginator },
+  components: { VPaginator, VIcon },
 })
 export default class DefaultPagination extends Vue {
   @Prop({ required: true }) private readonly elements!: Array<never>;

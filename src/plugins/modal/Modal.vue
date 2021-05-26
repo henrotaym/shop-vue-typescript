@@ -25,11 +25,11 @@
             v-click-outside="handleOutside"
           >
             <div class="absolute top-4 right-4">
-              <span
-                class="material-icons hover:text-green-500 cursor-pointer"
-                @click="close"
-                >close</span
-              >
+              <v-icon
+                name="close"
+                class="hover:text-green-500 cursor-pointer"
+                @click.native="close"
+              />
             </div>
             <div class="p-4 h-full">
               <slot />
@@ -43,9 +43,10 @@
 <script lang="ts">
 import { Component, Prop, Watch } from "vue-property-decorator";
 import Vue from "@/strong-vue";
+import VIcon from "@/components/_includes/Icon.vue";
 import { clickOutside } from "@/directives";
 
-@Component({ directives: { clickOutside } })
+@Component({ components: { VIcon }, directives: { clickOutside } })
 export default class Modal extends Vue {
   @Prop({ required: true }) private readonly name!: string;
   @Prop({ required: false, default: "modal" })

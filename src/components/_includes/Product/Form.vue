@@ -74,11 +74,11 @@
               }"
             >
               <span class="text-sm">{{ el.name }}</span>
-              <span
-                class="material-icons ml-1 text-[16px]"
+              <v-icon
+                name="check"
+                class="ml-2 text-[16px]"
                 v-if="selectorSlot.isSelected(el)"
-                >check</span
-              >
+              />
             </div>
           </div>
         </v-selector>
