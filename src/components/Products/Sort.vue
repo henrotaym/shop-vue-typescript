@@ -49,11 +49,11 @@
                 !selectorSlot.isSelected(el),
             }"
           >
-            <span
-              class="material-icons mr-1 text-[16px]"
+            <v-icon
+              name="check"
+              class="mr-1 text-[16px]"
               v-if="selectorSlot.isSelected(el)"
-              >check</span
-            >
+            />
             <span class="text-sm">{{ el.title }}</span>
           </div>
         </div>
@@ -67,10 +67,11 @@ import { Component } from "vue-property-decorator";
 import Vue from "@/strong-vue";
 import { clickOutside } from "@/directives";
 import VSelector, { SelectorSlot } from "@/components/Selector.vue";
+import VIcon from "@/components/_includes/Icon.vue";
 import { ActionTypes, GetterTypes } from "@/store/types";
 import { ProductSort } from "@/store/types/state";
 
-@Component({ components: { VSelector }, directives: { clickOutside } })
+@Component({ components: { VSelector, VIcon }, directives: { clickOutside } })
 export default class Sort extends Vue {
   private showSortList = false;
   private toggleSortList() {
